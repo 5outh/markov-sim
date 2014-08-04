@@ -70,9 +70,9 @@ insertSentence mkv = insertMkvPairsInto mkv . wordPairs
 fromSentences :: R.RandomGen g => [T.Text] -> Markov g T.Text
 fromSentences = fromMarkovI . foldl' insertSentence M.empty
 
-runFromSentences :: [T.Text] -> IO (Either Err T.Text)
-runFromSentences sentences = do
+runFromSentences :: Int -> [T.Text] -> IO (Either Err T.Text)
+runFromSentences n sentences = do
   g <- newPureMT
   let hds = map (head . T.words) sentences
   seed <- R.uniform hds
-  return $ T.unwords <$> runMarkov 10 (fromSentences sentences) g seed
+  return $ T.unwords <$> runMarkov n (fromSentences sentences) g seed
